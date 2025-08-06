@@ -25,71 +25,87 @@ Used Power Query to merge the tables based on common keys such as order_id, cust
 
 I also ensured correct join types to avoid duplication or null rows.
 
-[C:\Users\ADMIN\Documents\GitHub\Olist-Ecommerce-dashboard\documentation\Merging tables.png]
+![merged tables](./documentation/Snapshots\Merging tables.png)
 
-🧹 2. Column Cleanup
+## 2. Column Cleanup
 Removed unnecessary or duplicate columns, such as IDs already present in other merged tables or metadata columns not needed for analysis.
 
-Renamed columns for clarity:
+Renamed columns for clarity eg:
 
-freight_value → Shipping Cost
+freight_value -> Shipping Cost
 
-product_category_name → Product Category (Original)
+product_category_name -> Categories (Original)
 
-product_category_name_english → Product Category
 
-🕳️ 3. Null Handling
+## 3. Null Handling
 Dropped rows where order_status = "canceled" or order_status = "unavailable" as these rows caused null values in downstream columns.
 
-Other nulls were minimal and either removed or filled appropriately.
+Other nulls were minimal and were removed to enhance dashboard performance.
 
-🌐 4. Product Category Translation
+## 4. Product Category Translation
 Some product_category_name entries were untranslated or inconsistent.
 
 Built a small mapping table with:
 
-Column A: Unique Portuguese category names
+Column A: Unique category names
 
-Column B: English translations (renamed to meaningful categories)
+Column B: renamed to meaningful category names
 
 e.g. fashion_underwear_beach → Swimwear
 
+![cleaned_category names](.documetation/SnapshotsProduct_Categories_subtable.png)
+
 Used VLOOKUP-style merge to replace original category names with final labels.
 
-📸 [Insert screenshot of the mapping table and merge logic]
+![Vlookup to rename categories](.documentation/Vlookup_to_rename_categories.png)
 
-📦 5. Feature Engineering
-🚚 Delivery Metrics
+## 5. Feature Engineering
+- Created new and more insightful features.
+### 🚚 i.) Delivery Metrics
 Delivery Delay: actual_delivery_date - estimated_delivery_date
 
 Delivery Days: actual_delivery_date - shipping_date
 
-💰 Value Metrics
-Total Price Value: price + shipping_cost
+### 💰 ii.) Value Metrics
+Total_Price_Cost: price + shipping_cost
 
-🕒 Time-based Features
+### 🕒 iii.) Time-based Features
 Purchase Year
 
 Purchase Month
+
+Purchase Quarter
 
 Purchase Day of Week
 
 Purchase Hour
 
-These were extracted using Power BI's date functions to enable time-series and behavioral analysis.
+These were extracted from the Purchase_Timestamp column using Excel's date functions to enable time-series and behavioral analysis.
 
-📸 [Insert screenshots of calculated columns or DAX logic]
+![Time based Features](.documentation/Time_Based_Features.png)
+
+### 🧺 iv.) Additional useful buckets
+-Used a pivot table to categorize states based on percentiles into tiers according to the revenues generated
+
+![State Pivot table](.documentation/State_Pivot_Table.png)
+
+-Also added order value bucket
 
 ✅ Final Dataset Overview
 After preprocessing:
 
-Row count: ~[your number]
-
+- 116K rows and 32 columns
 No significant nulls remaining
 
-Clean column names and well-translated categorical data
+Clean column names and well-translated categorical data.
 
-Engineered metrics ready for modeling and dashboards
+Engineered metrics ready for further modeling and dashboard design.
 
-💡 Summary
-The preprocessing phase ensured the dataset was clean, reliable, and structured for analysis. Real-world datasets are rarely plug-and-play — this step was essential to create a solid foundation for the dashboard and insights.
+ Summary
+The preprocessing phase ensured the dataset was clean, reliable, and structured for analysis. This step was essential to create a solid foundation for the dashboard and insights.
+
+- Snapshots of before and after cleanup
+![Before](/documentation/Snapshots/Before_Cleanup.png)
+
+- After
+![After](/documentation/Snapshots/After_Cleanup.png)
