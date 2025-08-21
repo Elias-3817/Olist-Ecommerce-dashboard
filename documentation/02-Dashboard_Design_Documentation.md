@@ -1,0 +1,222 @@
+# Multi-Page Dashboard Design Documentation
+
+## Project name: Olist-Ecommerce-Report
+## Dataset: [Olist_brazilian_dataset](../data/02-cleaned-data/Olist_clean_table.csv)
+## Objective:
+To build a comprehensive data-driven and interactable report that dives deep into various business sectors in the company,
+identify areas for improvement and recommend actionable insights.
+
+This markdown file covers my thought process when designing each page in my power BI dashboard,
+explaining the why and how behind every visual. I also cover the key metrics and DAX measures used.
+
+## My Design Philosophy
+The report focuses on simplicity, interactivity, and actionable insights. Each page answers a specific business question:
+1. Page 1: [Sales Overview Summary] – Mainly focuses on in depth analysis on sales growth, number of sellers in the platform
+and how various product categories perform revenue-wise.
+2. Page 2: [Product Category Drillthrough] – A drillthrough page from the Sales page accessed through right-clicking on any 
+one of the product category bins. Its main focus is diving deeper into product category analysis.
+3. Page 3: [Delivery Performance] – The only objective is to analyse how product delivery performance affects customer satisfaction
+and subsequently, revenue.
+4. Page 4: [Customer Analysis] – Focuses on number of customers on the platform, factors that increase repeat customer rate, 
+customer growth over time and other patterns that directly impact revenue.
+
+### Page 1 Sales Overview Summary:
+
+![Sales_Overview_Summary](./documentation/Snapshots/Sales_Overview_Summary.png)
+
+**Purpose**: To thoroughly inspect trends in sales-revenue and develop actionable insights that directly lead to increase in
+revenue.
+
+Why These Visuals?
+Below is the reasoning behind the selected visuals and what they help us infer:
+
+1. KPI Cards
+They answer the core question: “Is the business healthy at the moment?”
+Designed for quick context and minimal cognitive load for stakeholders who skim:
+ - **Total Revenue** – Total revenue since launch.
+ - **Total Orders** – Total number of completed orders.
+ - **Average Revenue per Order** – Profitability per transaction.
+ - **Total Sellers** – Size of seller base (indicates marketplace strength).
+ - **Commission Revenue** – Platform earnings (assumed at 10% of total revenue).
+
+2. Donut Chart
+Purpose: Show revenue share distribution by customer tier (or region).
+Insight: Tier 1 states account for 73% of total revenue. This highlights market concentration and opportunity for focused marketing.
+
+3. Line Chart
+Purpose: Display time trends and correlations.
+Key Use: Visualize Revenue vs Seller Growth → Shows the direct relationship between new seller acquisition and revenue uplift.
+
+4. Stacked Column Chart
+Purpose: Compare product category performance.
+Insight: Home & Furniture and Electronics contribute 33% of total revenue. Helps identify priority categories for partnerships and promotions.
+
+5. Filters/Slicers
+Customer State | Day of Purchase | Payment Type
+Enable interactive exploration, deeper insight, and scenario analysis.
+
+**Key Insights**
+- **Tier 1 states drive 73% of revenue** → Double marketing spend in these high-performing regions for maximum ROI.
+- **Revenue growth tracks seller growth** → Launch seller acquisition incentives; every new seller creates measurable revenue lift.
+- **Home & Furniture + Electronics = 33% of revenue** → Focus on supply partnerships for these categories.
+
+**Appendix**: KEY DAX MEASURES
+```DAX
+Total_Revenue = SUM(Full_Olist_Dataset[payment_value])
+Total_Orders = DISTINCTCOUNT(Full_Olist_Dataset[order_id])
+Average Revenue Per Order = DIVIDE(SUM(Full_Olist_Dataset[payment_value]), DISTINCTCOUNT(Full_Olist_Dataset[order_id]))
+Total_sellers = DISTINCTCOUNT(Full_Olist_Dataset[seller_id])
+Commission_Revenue = [Total_Revenue] * 0.10
+```
+
+### Page 2: Product Category drillthrough
+
+![Product_Category_Drillthrough](./Snapshots/Product_Category_Drillthrough.png)
+
+**Purpose**: Expand further into which products generate more revenue and are more popular across states.
+
+#### What Can the User Analyze Here?
+
+- How profitable this category is compared to others
+- Where the category is most popular by region
+- Whether revenue is growing, declining, or seasonal
+- How satisfied customers are with this category
+
+##### How to Use This Page
+- Use drillthrough from the main dashboard to focus on a specific product category.
+- Apply filters (Day of Purchase, Payment Type, Customer State) to uncover patterns.
+- Compare KPIs (Profit Margin, Revenue, Orders) to identify high-value categories.
+- Check review scores via the donut chart to assess quality perception.
+
+**Key visuals** 
+
+1. **KPI cards**
+    - **Profit margins** - Revenue minus Cost of producing/acquiring the goods. Shows which products categories are most profitable.
+    - **Total revenue** - Total revenue generated by that specific product category.
+    - **Total Orders** - highlights how many orders have been made for that specific order.
+
+2. **Map** - Helps to visually explain where each product category is most popular in the country.
+
+3. **Line Chart** - Revenue trend over time (Is the category seasonal?).
+
+4. **Stacked Bar Chart** - State-level revenue comparison for the selected category.
+
+5. **Donut Chart** - Shows Customer satisfaction distribution (review scores).
+
+6. **Filters/Slicers** 
+    Day of purchase|Payment Type| Customer State
+
+**DAX Measures**
+
+This page uses the same core measures as the main dashboard (see Appendix
+), applied in the drillthrough context.
+
+
+### Page 3: Delivery Performance
+
+![Delivery_Perfomance](./documentation/Snapshots/Delivery_Perfomance.png)
+
+**Purpose**: Analyze delivery timelines, delays, and their impact on customer satisfaction and revenue retention.
+
+**Key Visuals**
+
+1. **KPI Cards**
+   - **Average Delivery Duration** - How long it takes for a product to be delivered after a customer orders a product.
+   - **Late Orders** - Days exceeding estimated delivery date.
+   - **On-Time Delivery %** – How many orders arrive before or on the estimated delivery date.
+   - **Average Late Delivery Days** - Average of by how late orders arrive to customers.
+
+2. **Filters/Slicers**
+   State | Order Day | Delay Responsibility
+   Enables user to filter by customer state, day of purchase and see why delays occured (Logistics problem or seller's)
+
+3. **Line Chart** – Delivery Delay Trend Over Time -> Tracks improvements or worsening of logistics.
+
+4. **Stacked Column Chart** – Severity of late orders and customer satisfaction through review score. Emphasizes that customers expectedly are not pleased when their orders are delayed especially delays exceeding 3 days.
+
+5. **Scatter Plot** - Highlights regions with slower deliveries, and how much revenue the state generates (through the tiers) and how much attention we should focus on
+
+6. **Table** - Table with the columns: State, Delivery Rate, Revenue at Risk, Late Orders. To make even more inferences and comparisons state by state.
+
+**Key Insights**
+- The delay_responsibility filter shows that most delays occur because of logistics. Investigate the reasons for this in affected areas ie the state MA and implement stricter SLAs for logistics partners.
+- **Late deliveries** negatively impact review scores and revenue consequentially.
+- Specific states ie MA, experience below par delivery rates → Optimize routes or add regional fulfillment centers.
+- Even though the state SP is above our targeted delivery rate (85%), the revenue at risk is still $330,018 which is very high. Try to optimize for this by organizing for faster delivery since most of the revenue is generated there.
+
+**KEY DAX MEASURES**:
+```DAX
+Average_Delivery_Days = AVERAGE(Full_Olist_Dataset[actual_delivery_duration])
+
+Late_Orders = CALCULATE(COUNTROWS(olist_orders_dataset),FILTER(olist_orders_dataset,TRIM(LOWER(olist_orders_dataset[delay_responsibility])) <> "on time"))
+
+ON-TIME_DELIVERY_RATE = DIVIDE(COUNTROWS(FILTER(Full_Olist_Dataset,Full_Olist_Dataset[delivery_delays] <= 0)), COUNTROWS(Full_Olist_Dataset))
+
+Average_Delivery_Delays_LateOnly = CALCULATE(AVERAGE(Full_Olist_Dataset[delivery_delays]), (Full_Olist_Dataset[delivery_delays] > 0))
+
+Delivery_Bucket = SWITCH(TRUE(),Full_Olist_Dataset[delivery_delays] <= 0, "On-Time", Full_Olist_Dataset[delivery_delays] <= 3, "0-3 Days Late", Full_Olist_Dataset[delivery_delays] <= 7,"4-7 Days Late", Full_Olist_Dataset[delivery_delays] <= 14,"8-14 Days Late", "15 Days Late")
+
+Revenue_at_risk = [Total_Revenue] * (1 -Full_Olist_Dataset[ON-TIME_DELIVERY_RATE])
+```
+### Page 4: Customer Analysis
+
+![Customer_Analysis](./Snapshots/Customer_Analysis.png)
+
+**Purpose**: Analyse Customer growth, customer behavior(repeat customers, days of purchase) and customer satisfaction
+
+**Key Visuals**
+
+1. **KPI cards**
+    - Total Customers - Total number of customers since launch.
+    - Repeat Customers - How many of those customers purchased more than once.
+    - Customer Repeat Rate - Rate at which customers come back on the platform to buy again.
+    - Top 5% Revenue - Indicates existence of whales who contributed substantially to the total revenue.
+    - Top 5% Revenue Share - Indicates what percentage of the total revenue the top 5% contribute to.
+
+2. ** Line and clustered column chart** - Helps visualize number of customer growth alongside repeat customer growth. Indicating increasing satisfaction of customers as time went by.
+
+3. ** Line and clustered column chart** -  We use it again to plot average revenue per order and repeat customers across the review score, uncovering a crucial insight. Satisfied customers are likely to buy again on the platform thereby increasing revenue also customers ordering high value products are likely to be unsatisfied, likely due to increased expectactions.
+
+4. **Clustered bar chart** - Shows which days customers are more likely to make orders. We should target advertisements and add in on more staff on these days to deal with the high number of orders.
+
+5. **Table** - A table with columns: Customer_unique_id,Orders,Revenue and State - To highlight the top 10 customers with the largest contribution to the platform.
+
+**Key Insights**
+- Customer satisfaction, leads to more repeat customers which leads to more revenue generated as customer retention is more cost-friendly than customer acquisition. Reinforces striving to improve delivery services.
+- Offer more discounts potentially to the top 5% customers to incentivise retention.
+- Customers who make purchases worth more than $190 are very likely to be unsatisfied with the purchase. More priority should be given to such orders to make improve satisfaction and thereby retention. There is a lot of room for growth here.
+
+**KEY DAX MEASURES**
+```DAX
+Total_customers = DISTINCTCOUNT(Olist_Clean_Dataset[customer_unique_id])
+
+Repeat_Customers = COUNTROWS(FILTER(SUMMARIZE(Olist_clean_table,Olist_clean_table[customer_unique_id],"Order Count",COUNTROWS(Olist_clean_table)),[Order Count] > 1))
+
+Repeat_Customer_Rate = DIVIDE([Repeat_Customers], DISTINCTCOUNT(Olist_clean_table[customer_unique_id]))
+
+Top 5% Revenue = 
+VAR _CustTable =
+    ADDCOLUMNS(
+        VALUES(Full_Olist_Dataset[customer_unique_id]), 
+        "CustomerRevenue", CALCULATE(SUM(Full_Olist_Dataset[payment_value])) 
+    )
+VAR _CustCount = COUNTROWS(_CustTable)
+VAR _TopN = MAX(1, ROUNDUP(_CustCount * 0.05, 0))
+VAR _TopCustomers =
+    TOPN(_TopN, _CustTable, [CustomerRevenue], DESC)
+RETURN
+SUMX(_TopCustomers, [CustomerRevenue])
+
+Top 5% Revenue Share = DIVIDE([Top 5% Revenue], [Total_Revenue])
+```
+
+### Theme & Layout
+- Color Scheme: Chose a blue primary (#199ADB) to represent trust, reliability, and clarity.
+
+- Dark Background (#1A1A1A): Improves contrast and visual focus, making KPIs pop. Ideal for dashboards viewed on screens for long periods.
+
+- Rounded Edges & Spacing: Softens the layout, reduces visual fatigue, and gives a modern, professional aesthetic.
+
+- Striped Navy-Blue Background (via PowerPoint): Adds subtle texture to avoid a flat, monotonous design while maintaining simplicity.
+
+- Users can navigate via default Power BI tabs or drill into product-level insights from the Sales page using right-click drillthrough.
