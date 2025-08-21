@@ -25,7 +25,7 @@ Used Power Query to merge the tables based on common keys such as order_id, cust
 
 I also ensured correct join types to avoid duplication or null rows.
 
-![merged_tables](./documentation/Snapshots\Merging tables.png)
+![merged_tables](./documentation/Snapshots/Merging tables.png)
 
 ## 2. Column Cleanup
 Removed unnecessary or duplicate columns, such as IDs already present in other merged tables or metadata columns not needed for analysis.
@@ -49,11 +49,11 @@ Column B: renamed to meaningful category names
 
 e.g. fashion_underwear_beach → Swimwear
 
-![cleaned_category names](.documetation/SnapshotsProduct_Categories_subtable.png)
+![cleaned_category names](.documetation/Snapshots/Product_Categories_subtable.png)
 
 Used VLOOKUP-style merge to replace original category names with final labels.
 
-![Vlookup to rename categories](.documentation/Vlookup_to_rename_categories.png)
+![Vlookup to rename categories](.documentation/Snapshots/Vlookup_to_rename_categories.png)
 
 ## 5. Feature Engineering
 - Created new and more insightful features.
@@ -78,12 +78,12 @@ Purchase Hour
 
 These were extracted from the Purchase_Timestamp column using Excel's date functions to enable time-series and behavioral analysis.
 
-![Time based Features](.documentation/Time_Based_Features.png)
+![Time based Features](.documentation/Snapshots/Time_Based_Features.png)
 
 ### 🧺 iv.) Additional useful buckets
 -Used a pivot table to categorize states based on percentiles into tiers according to the revenues generated
 
-![State Pivot table](.documentation/State_Pivot_Table.png)
+![State Pivot table](.documentation/Snapshots/State_Pivot_Table.png)
 
 -Also added order value bucket
 

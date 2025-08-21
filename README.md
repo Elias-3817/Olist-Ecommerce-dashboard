@@ -5,7 +5,7 @@
 
 ---
 
-## ⚡ Quick Visual (Open-first)
+## ⚡Preview of summary page
 ![Sales Overview](./documentation/Snapshots/Sales_Overview_Summary.png)
 
 ---
@@ -97,7 +97,7 @@ Folder structure (what each folder contains)
   ├─ Findings_Implications.md  ← Findings & actions  
   └─ Snapshots/                ← All screenshot images used above
 .README ← (this file)  
-
+```
 Documentation (full)
 Read the supporting docs for the why/how and DAX:
 
